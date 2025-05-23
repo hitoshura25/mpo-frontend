@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MPO Podcast Player</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>MPO Podcast Player</h1>
+    </header>
+    
+    <main class="content">
+      <section class="podcast-list">
+        <h2>Episodes</h2>
+        <div id="episodes-container">
+          <!-- Episodes will be loaded here -->
+          <div class="loading">Loading episodes...</div>
+        </div>
+      </section>
+      
+      <section class="player-container">
+        <div class="now-playing">
+          <div class="episode-info">
+            <h3 id="current-title">No episode selected</h3>
+            <p id="current-description">Select an episode to start listening</p>
+          </div>
+          <div class="episode-image">
+            <img id="current-image" alt="Podcast cover">
+          </div>
+        </div>
+        
+        <div class="player-controls">
+          <div class="progress-container">
+            <span id="current-time">00:00</span>
+            <div class="progress-bar">
+              <div id="progress" class="progress"></div>
+            </div>
+            <span id="duration">00:00</span>
+          </div>
+          
+          <div class="control-buttons">
+            <button id="btn-backward" class="control-btn" title="Skip backward 15s">
+              <span>-15s</span>
+            </button>
+            <button id="btn-play" class="control-btn primary" title="Play/Pause">
+              <span>▶</span>
+            </button>
+            <button id="btn-forward" class="control-btn" title="Skip forward 30s">
+              <span>+30s</span>
+            </button>
+          </div>
+          
+          <div class="secondary-controls">
+            <div class="volume-control">
+              <span>Volume</span>
+              <input type="range" id="volume-slider" min="0" max="100" value="80">
+            </div>
+            <div class="speed-control">
+              <span>Speed</span>
+              <select id="playback-speed">
+                <option value="0.5">0.5x</option>
+                <option value="0.75">0.75x</option>
+                <option value="1" selected>1x</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2x</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer class="app-footer">
+      <p>Powered by WebAssembly</p>
+    </footer>
+  </div>
+  
+  <!-- Scripts will be injected by webpack -->
+</body>
+</html>
