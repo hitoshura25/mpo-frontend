@@ -33,6 +33,18 @@ RUN npm run build
 
 # Production stage
 FROM nginx:alpine
+
+# Create a user with UID 1000
+RUN adduser -u 1000 -D myuser
+
+# Copy build artifacts
 COPY --from=build /app/dist /usr/share/nginx/html
+
+# Change ownership of /usr/share/nginx/html to myuser
+RUN chown -R myuser:myuser /usr/share/nginx/html
+
+# Switch to myuser
+USER myuser
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
