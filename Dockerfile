@@ -1,0 +1,38 @@
+# Build stage
+FROM rust:1.87-slim AS wasm-builder
+
+# Set working directory
+WORKDIR /app
+
+# Install required dependencies
+RUN apt-get update && apt-get install -y curl build-essential pkg-config libssl-dev
+
+# Install wasm-pack
+RUN curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+# Copy Rust source files
+COPY src/wasm /app/src/wasm
+
+# Build WebAssembly
+WORKDIR /app/src/wasm
+RUN wasm-pack build --target web
+
+# Node build stage
+FROM node:24-alpine AS build
+WORKDIR /app
+# Copy package files
+COPY package*.json ./
+# Install dependencies
+RUN npm ci
+# Copy the rest of the application
+COPY . .
+# Copy WebAssembly build from previous stage
+COPY --from=wasm-builder /app/src/wasm/pkg /app/src/wasm/pkg
+# Build the application
+RUN npm run build
+
+# Production stage
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

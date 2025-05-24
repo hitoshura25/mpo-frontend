@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:wasm": "cd src/wasm && wasm-pack build --target web",
-    "build": "npm run build:wasm && webpack --mode production",
+    "build": "webpack --mode production",
     "start": "npm run build:wasm && webpack serve --mode development",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean:wasm": "rm -rf dist/ src/wasm/pkg/ && cd src/wasm && cargo clean && cd ../..",
