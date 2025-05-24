@@ -37,6 +37,8 @@ A web-based podcast player application that uses WebAssembly for audio processin
    ```
 
 ### Docker
+*Note*: Docker image must be run as user uuid 1000
+
 ## Install Docker
 https://www.docker.com/get-started/
 
