@@ -84,6 +84,8 @@ function isGamingConsole(): boolean {
   return userAgent.includes('playstation') || userAgent.includes('nintendo') || userAgent.includes('xbox');
 }
 
+
+
 function enableConsoleMode() {
   document.body.classList.add('console-mode');
   updateFocusableElements();
@@ -103,6 +105,7 @@ function setInitialFocus() {
 
 function setupUI() {
   // Tab navigation
+  const tabsContainer = document.querySelector('.console-tabs');
   const tabs = document.querySelectorAll('.console-tab');
   tabs.forEach(tab => {
     tab.addEventListener('click', () => switchTab(tab.getAttribute('data-tab') || 'episodes'));
@@ -110,9 +113,10 @@ function setupUI() {
   
   // Console mode toggle
   const consoleModeToggle = document.getElementById('console-mode-toggle');
+  updateConsoleTabs(consoleModeToggle, tabsContainer);  
   consoleModeToggle?.addEventListener('click', () => {
     document.body.classList.toggle('console-mode');
-    consoleModeToggle.textContent = document.body.classList.contains('console-mode') ? 'Disable' : 'Enable';
+    updateConsoleTabs(consoleModeToggle, tabsContainer);
     updateFocusableElements();
   });
   
@@ -155,6 +159,14 @@ function setupUI() {
     isPlaying = false;
     updatePlayButton();
   });
+}
+
+function updateConsoleTabs(consoleModeToggle: Element | null, tabsContainer: Element | null) {
+  const isConsoleMode = document.body.classList.contains('console-mode');
+  tabsContainer?.classList.toggle('hidden', !isConsoleMode);
+  if (consoleModeToggle) {
+    consoleModeToggle.textContent = isConsoleMode ? 'Disable' : 'Enable';
+  }
 }
 
 function switchTab(tabName: string) {

@@ -207,3 +207,8 @@ select {
   text-align: center;
   color: #666;
 }
+
+.hidden {
+  display: none;
+  visibility: hidden;
+}
