@@ -1,5 +1,6 @@
 // Import the WebAssembly module
 import init, { AudioProcessor } from '../../src/wasm/pkg/podcast_player.js';
+import { Auth } from './auth';
 
 // Sample podcast data - in a real app, this would come from an API
 const podcastEpisodes = [
@@ -38,6 +39,15 @@ let currentFocusIndex = 0;
 // Initialize the application
 async function init_app() {
   try {
+
+    const auth = Auth.getInstance();
+    const isLoggedIn = await auth.checkAuth();
+
+    if (!isLoggedIn) {
+        window.location.href = './login.html';
+        return;
+    }
+
     // Initialize the WebAssembly module
     await init();
     

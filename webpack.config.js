@@ -3,10 +3,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './public/ts/index.ts',
+  entry: {
+    main: './public/ts/index.ts',
+    login: './public/ts/login.ts',
+    login_callback: './public/ts/login_callback.ts'
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'js/bundle.js',
+    filename: 'js/[name].bundle.js',
   },
   module: {
     rules: [
@@ -24,12 +28,23 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       filename: 'index.html',
+      chunks: ['main']
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/login.html',
+      filename: 'login.html',
+      chunks: ['login']
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/login_callback.html',
+      filename: 'login_callback.html',
+      chunks: ['login_callback']
     }),
     new CopyWebpackPlugin({
       patterns: [
         { from: './src/wasm/pkg', to: 'wasm' },
-        { from: './public/css', to: 'css' }
-        // Removed assets pattern to avoid the error
+        { from: './public/css', to: 'css' },
+        { from: './public/manifest.json', to: './manifest.json' }
       ],
     }),
   ],
