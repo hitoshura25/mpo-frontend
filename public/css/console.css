@@ -1,0 +1,203 @@
+/* Console-specific styles for PlayStation 5 and Nintendo Switch */
+
+:root {
+  --focus-color: #ff9900;
+  --focus-outline-width: 4px;
+  --button-size: 60px;
+  --large-button-size: 80px;
+  --button-spacing: 30px;
+  --text-size-large: 24px;
+  --text-size-medium: 20px;
+  --text-size-small: 18px;
+}
+
+/* Console-optimized body styles */
+body.console-mode {
+  font-size: var(--text-size-medium);
+  line-height: 1.8;
+  padding: 40px;
+}
+
+/* Larger container for TV screens */
+body.console-mode .app-container {
+  max-width: 90%;
+  padding: 40px;
+}
+
+/* Larger header for visibility on TV */
+body.console-mode .app-header h1 {
+  font-size: 36px;
+  margin-bottom: 30px;
+}
+
+/* Single column layout for console view */
+body.console-mode .content {
+  grid-template-columns: 1fr;
+}
+
+/* Focus styles for navigation */
+body.console-mode .focusable:focus,
+body.console-mode .focusable.focused {
+  outline: var(--focus-outline-width) solid var(--focus-color);
+  outline-offset: 4px;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.5);
+}
+
+/* Larger episode items for easier selection */
+body.console-mode .episode-item {
+  padding: 25px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+}
+
+body.console-mode .episode-item.active {
+  border-left-width: 8px;
+}
+
+body.console-mode .episode-item h3 {
+  font-size: var(--text-size-large);
+  margin-bottom: 10px;
+}
+
+body.console-mode .episode-item p {
+  font-size: var(--text-size-medium);
+}
+
+/* Larger controls for gamepad navigation */
+body.console-mode .control-btn {
+  width: var(--button-size);
+  height: var(--button-size);
+  font-size: var(--text-size-medium);
+  border-width: 2px;
+}
+
+body.console-mode .control-btn.primary {
+  width: var(--large-button-size);
+  height: var(--large-button-size);
+  font-size: 32px;
+}
+
+body.console-mode .control-buttons {
+  gap: var(--button-spacing);
+  margin: 30px 0;
+}
+
+/* Larger progress bar for easier selection */
+body.console-mode .progress-bar {
+  height: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Larger form controls */
+body.console-mode input[type="range"] {
+  width: 200px;
+  height: 20px;
+}
+
+body.console-mode select {
+  padding: 12px;
+  font-size: var(--text-size-medium);
+}
+
+/* Navigation helper */
+.navigation-helper {
+  display: none;
+}
+
+body.console-mode .navigation-helper {
+  display: flex;
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 15px;
+  justify-content: center;
+  gap: 30px;
+  z-index: 100;
+}
+
+.button-guide {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Sections for tab navigation */
+body.console-mode .nav-section {
+  padding: 30px;
+  margin-bottom: 30px;
+  border-radius: 15px;
+}
+
+body.console-mode .nav-section.active {
+  border: 4px solid var(--focus-color);
+}
+
+/* Tab navigation */
+body.console-mode .console-tabs {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+body.console-mode .console-tab {
+  padding: 15px 30px;
+  background-color: var(--card-background);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+body.console-mode .console-tab.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Larger episode image */
+body.console-mode .episode-image img {
+  width: 200px;
+  height: 200px;
+}
+
+/* Larger text for now playing */
+body.console-mode .episode-info h3 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+body.console-mode .episode-info p {
+  font-size: var(--text-size-medium);
+}
+
+#console-mode-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.button-text {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.mode-label {
+  font-size: 12px;
+  margin-top: 4px;
+  opacity: 0.8;
+}

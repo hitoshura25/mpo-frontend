@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#4a86e8">
+  <title>Podcast Player</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/console.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="description" content="A WebAssembly-powered podcast player">
+</head>
+<body>
+  <div class="app-container" id="app">
+    <header class="app-header">
+      <h1>Podcast Player</h1>
+      <span class="mode-label">Console Mode</span>
+      <button id="console-mode-toggle" class="focusable" aria-label="Enable Console Mode">
+        <span class="button-text">Enable</span>
+      </button>
+    </header>
+    
+    <div class="console-tabs">
+      <div class="console-tab focusable active" data-tab="episodes">Episodes</div>
+      <div class="console-tab focusable" data-tab="player">Player</div>
+      <div class="console-tab focusable" data-tab="settings">Settings</div>
+    </div>
+    
+    <div class="content">
+      <section id="episodes-section" class="nav-section active">
+        <div id="episodes-container" class="podcast-list"></div>
+      </section>
+      
+      <section id="player-section" class="nav-section">
+        <div class="player-container">
+          <div class="now-playing">
+            <div class="episode-image">
+              <img id="current-image" alt="Episode artwork">
+            </div>
+            <div class="episode-info">
+              <h3 id="current-title"></h3>
+              <p id="current-description"></p>
+            </div>
+          </div>
+          
+          <div class="player-controls">
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress"></div>
+              </div>
+              <div class="time-display">
+                <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
+              </div>
+            </div>
+            
+            <div class="control-buttons">
+              <button id="btn-backward" class="control-btn focusable">-15s</button>
+              <button id="btn-play" class="control-btn primary focusable" title="Play/Pause">
+                <span>▶</span>
+              </button>
+              <button id="btn-forward" class="control-btn focusable">+30s</button>
+            </div>
+            
+            <div class="secondary-controls">
+              <div class="volume-control">
+                <label for="volume-slider">Volume</label>
+                <input type="range" id="volume-slider" min="0" max="100" value="100" class="focusable">
+              </div>
+              
+              <div class="speed-control">
+                <label for="playback-speed">Speed</label>
+                <select id="playback-speed" class="focusable">
+                  <option value="0.5">0.5x</option>
+                  <option value="0.75">0.75x</option>
+                  <option value="1" selected>1x</option>
+                  <option value="1.25">1.25x</option>
+                  <option value="1.5">1.5x</option>
+                  <option value="2">2x</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <section id="settings-section" class="nav-section">
+        <div class="settings-container">
+          <div class="setting-item">
+            <h3>App Settings</h3>
+            <p>Settings will appear here in a future update.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <div class="navigation-helper">
+      <div class="button-guide"><div class="button-icon">↑↓</div> Navigate</div>
+      <div class="button-guide"><div class="button-icon">A</div> Select</div>
+      <div class="button-guide"><div class="button-icon">B</div> Back</div>
+    </div>
+  </div>
+  
+  <noscript>
+    <p>This application requires JavaScript to run.</p>
+  </noscript>
+</body>
+</html>
