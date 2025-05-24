@@ -1,6 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Webpack = require('webpack');
+const Dotenv = require('dotenv');
+
+const env = Dotenv.config().parsed || {};
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 
 module.exports = {
   entry: {
@@ -25,6 +33,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js']
   },
   plugins: [
+    new Webpack.DefinePlugin(envKeys),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       filename: 'index.html',

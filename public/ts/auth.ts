@@ -1,13 +1,13 @@
 import { UserManager, UserManagerSettings } from 'oidc-client-ts';
 
 const settings: UserManagerSettings = {
-    authority: 'http://localhost:8080/auth/realms/master', // e.g., 'https://accounts.google.com'
-    client_id: 'Media-Player-Omega',
-    redirect_uri: 'http://localhost:9080/login_callback.html', // Ensure this matches your setup
+    authority: process.env.OAUTH_AUTHORITY || '',
+    client_id: process.env.OAUTH_CLIENT_ID || '',
+    redirect_uri: process.env.OAUTH_REDIRECT_URI || '',
     response_type: 'code',
     scope: 'openid profile email',
-    post_logout_redirect_uri: 'http://localhost:8080/',
-    client_secret: 'CzmVBHbVlzMAvn1kpfuzZ1PbQ7vEnn2A'
+    post_logout_redirect_uri: process.env.OAUTH_POST_LOGOUT_REDIRECT_URI,
+    client_secret: process.env.OAUTH_CLIENT_SECRET 
 };
 
 export class Auth {
