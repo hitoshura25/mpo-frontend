@@ -6,8 +6,7 @@ const settings: UserManagerSettings = {
     redirect_uri: process.env.OAUTH_REDIRECT_URI || '',
     response_type: 'code',
     scope: 'openid profile email',
-    post_logout_redirect_uri: process.env.OAUTH_POST_LOGOUT_REDIRECT_URI,
-    client_secret: process.env.OAUTH_CLIENT_SECRET 
+    post_logout_redirect_uri: process.env.OAUTH_POST_LOGOUT_REDIRECT_URI
 };
 
 export class Auth {
@@ -44,7 +43,7 @@ export class Auth {
 
     async handleLoginCallback(): Promise<boolean> {
         try {
-            await this.userManager.signinRedirectCallback()
+            await this.userManager.signinCallback()
         } catch (error) {
             console.error('Login callback failed:', error);
         }
