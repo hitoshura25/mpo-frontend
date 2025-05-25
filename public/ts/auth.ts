@@ -1,13 +1,17 @@
 import { UserManager, UserManagerSettings } from 'oidc-client-ts';
+import { getEnv } from './env-loader';
 
-const settings: UserManagerSettings = {
-    authority: process.env.OAUTH_AUTHORITY || '',
-    client_id: process.env.OAUTH_CLIENT_ID || '',
-    redirect_uri: process.env.OAUTH_REDIRECT_URI || '',
-    response_type: 'code',
-    scope: 'openid profile email',
-    post_logout_redirect_uri: process.env.OAUTH_POST_LOGOUT_REDIRECT_URI,
-    client_secret: process.env.OAUTH_CLIENT_SECRET 
+// Function to get settings with proper error handling
+function getSettings(): UserManagerSettings {
+    const env = getEnv();
+    return {
+        authority: env.OAUTH_AUTHORITY,
+        client_id: env.OAUTH_CLIENT_ID,
+        redirect_uri: env.OAUTH_REDIRECT_URI,
+        response_type: 'code',
+        scope: 'openid profile email',
+        post_logout_redirect_uri: env.OAUTH_POST_LOGOUT_REDIRECT_URI,
+    };
 };
 
 export class Auth {
@@ -16,7 +20,13 @@ export class Auth {
     private isAuthenticated: boolean = false;
 
     private constructor() {
-        this.userManager = new UserManager(settings);
+        try {
+            const settings = getSettings();
+            this.userManager = new UserManager(settings);
+        } catch (error) {
+            console.error('Failed to initialize UserManager:', error);
+            throw error;
+        }
     }
 
     static getInstance(): Auth {
@@ -44,7 +54,7 @@ export class Auth {
 
     async handleLoginCallback(): Promise<boolean> {
         try {
-            await this.userManager.signinRedirectCallback()
+            await this.userManager.signinCallback()
         } catch (error) {
             console.error('Login callback failed:', error);
         }
