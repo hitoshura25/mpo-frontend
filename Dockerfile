@@ -55,8 +55,12 @@ RUN chown -R myuser:myuser /usr/share/nginx/html && \
 RUN mkdir -p /run && chown myuser:myuser /run
 RUN touch /run/nginx.pid && chown myuser:myuser /run/nginx.pid
 
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 # Switch to myuser
 USER myuser
 
 EXPOSE 80
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

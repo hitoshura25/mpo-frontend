@@ -54,7 +54,8 @@ module.exports = {
       patterns: [
         { from: './src/wasm/pkg', to: 'wasm' },
         { from: './public/css', to: 'css' },
-        { from: './public/manifest.json', to: './manifest.json' }
+        { from: './public/manifest.json', to: './manifest.json' },
+        { from: './public/env-config.js', to: './env-config.js' }
       ],
     }),
   ],
