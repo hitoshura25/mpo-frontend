@@ -1,13 +1,16 @@
 const CACHE_NAME = 'podcast-player-v1';
+// Get the base path from the service worker scope
+const BASE_PATH = self.registration.scope.replace(/\/$/, '');
+
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/offline.html',
-  '/css/styles.css',
-  '/css/console.css',
-  '/js/index.js',
-  '/src/wasm/pkg/podcast_player.js',
-  '/src/wasm/pkg/podcast_player_bg.wasm'
+  `${BASE_PATH}/`,
+  `${BASE_PATH}/index.html`,
+  `${BASE_PATH}/offline.html`,
+  `${BASE_PATH}/css/styles.css`,
+  `${BASE_PATH}/css/console.css`,
+  `${BASE_PATH}/js/main.bundle.js`,
+  `${BASE_PATH}/wasm/podcast_player.js`,
+  `${BASE_PATH}/wasm/podcast_player_bg.wasm`
 ];
 
 // Install service worker and cache assets
@@ -33,6 +36,11 @@ self.addEventListener('activate', event => {
 
 // Serve from cache, falling back to network
 self.addEventListener('fetch', event => {
+  // Only handle GET requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+  
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -62,8 +70,8 @@ self.addEventListener('fetch', event => {
           return response;
         }).catch(() => {
           // If the request is for an HTML page, return the offline page
-          if (event.request.headers.get('accept').includes('text/html')) {
-            return caches.match('/offline.html');
+          if (event.request.headers.get('accept')?.includes('text/html')) {
+            return caches.match(`${BASE_PATH}/offline.html`);
           }
         });
       })

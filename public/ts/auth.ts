@@ -9,8 +9,13 @@ function getSettings(): UserManagerSettings {
         client_id: env.OAUTH_CLIENT_ID,
         redirect_uri: env.OAUTH_REDIRECT_URI,
         response_type: 'code',
-        scope: 'openid profile email',
+        scope: 'openid profile email offline_access',
         post_logout_redirect_uri: env.OAUTH_POST_LOGOUT_REDIRECT_URI,
+        automaticSilentRenew: true,
+        includeIdTokenInSilentRenew: true,
+        silentRequestTimeoutInSeconds: 10,
+        loadUserInfo: true,
+        monitorSession: false
     };
 };
 
@@ -23,6 +28,21 @@ export class Auth {
         try {
             const settings = getSettings();
             this.userManager = new UserManager(settings);
+            
+            // Set up event listeners for token events
+            this.userManager.events.addUserLoaded(() => {
+                console.log('User loaded event');
+                this.isAuthenticated = true;
+            });
+            
+            this.userManager.events.addSilentRenewError((error) => {
+                console.error('Silent renew error:', error);
+            });
+            
+            this.userManager.events.addUserSignedOut(() => {
+                console.log('User signed out');
+                this.isAuthenticated = false;
+            });
         } catch (error) {
             console.error('Failed to initialize UserManager:', error);
             throw error;
@@ -64,9 +84,20 @@ export class Auth {
     async checkAuth(): Promise<boolean> {
         try {
             const user = await this.userManager.getUser();
-            if (user) {
+            if (user && user.expires_at && user.expires_at > Date.now() / 1000) {
                 this.isAuthenticated = true;
                 return true;
+            } else if (user && user.refresh_token) {
+                // Token expired but we have a refresh token
+                try {
+                    await this.userManager.signinSilent();
+                    this.isAuthenticated = true;
+                    return true;
+                } catch (refreshError) {
+                    console.error('Silent token refresh failed:', refreshError);
+                    this.isAuthenticated = false;
+                    return false;
+                }
             } else {
                 this.isAuthenticated = false;
                 return false;
