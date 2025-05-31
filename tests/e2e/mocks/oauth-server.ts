@@ -3,10 +3,13 @@ import jwt from 'jsonwebtoken';
 import { AddressInfo } from 'net';
 import cors from 'cors';
 
+const JWT_SECRET = 'test-secret';
+
 export async function setupMockOAuthServer(config: { clientId: string; redirectUri: string }): Promise<express.Server> {
   const app = express();
   app.use(cors())
   app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
   app.get('/.well-known/openid-configuration', (req, res) => {
     const issuer = `http://localhost:${(server.address() as AddressInfo).port}`;
     res.json({
@@ -54,25 +57,48 @@ export async function setupMockOAuthServer(config: { clientId: string; redirectU
 
   app.post('/oauth/token', (req, res) => {
     const { code, client_id, redirect_uri, grant_type } = req.body;
+    const issuer = `http://localhost:${(server.address() as AddressInfo).port}`;
 
     if (client_id !== config.clientId) {
       return res.status(401).json({ error: 'Invalid client credentials' });
     }
 
     const payload = {
+      iss: issuer,
+      aud: client_id,
       sub: 'test-user',
       name: 'Test User',
       email: 'test@example.com',
     };
 
-    const accessToken = jwt.sign(payload, 'secret', { expiresIn: '1h' });
+    const accessToken = jwt.sign(payload, JWT_SECRET, {algorithm: 'HS256', expiresIn: '1h' });
 
     res.json({
       access_token: accessToken,
       token_type: 'Bearer',
       expires_in: 3600,
+      id_token: jwt.sign({ ...payload, nonce: 'test-nonce' }, JWT_SECRET, { algorithm: 'HS256', expiresIn: '1h' }),
       refresh_token: 'mock_refresh_token',
     });
+  });
+
+  app.get('/oauth/userinfo', (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Missing or invalid authorization header' });
+    }
+
+    const token = authHeader.substring(7);
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      res.json({
+        sub: decoded.sub,
+        name: decoded.name,
+        email: decoded.email,
+      });
+    } catch (error) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
   });
 
   const server = app.listen(0, () => {
