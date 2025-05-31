@@ -9,7 +9,6 @@ test.describe('Authentication Flow', () => {
   test.beforeAll(async () => {
     mockOAuthServer = await setupMockOAuthServer({
       clientId: 'test-client-id',
-      clientSecret: 'test-secret',
       redirectUri: 'http://localhost:8080/login_callback.html'
     });
     mockOAuthServerPort = (mockOAuthServer.address() as AddressInfo).port;
