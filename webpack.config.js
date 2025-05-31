@@ -19,7 +19,6 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[name].bundle.js',
-    publicPath: ''
   },
   module: {
     rules: [
@@ -55,7 +54,9 @@ module.exports = {
         { from: './src/wasm/pkg', to: 'wasm' },
         { from: './public/css', to: 'css' },
         { from: './public/manifest.json', to: './manifest.json' },
-        { from: './public/env-config.js', to: './env-config.js' }
+        { from: './public/env-config.js', to: './env-config.js' },
+        { from: './public/service-worker.js', to: './service-worker.js' },
+        { from: './public/offline.html', to: './offline.html' }
       ],
     }),
   ],
