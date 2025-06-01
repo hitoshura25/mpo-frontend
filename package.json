@@ -7,11 +7,13 @@
     "build:wasm": "cd src/wasm && wasm-pack build --target web",
     "build": "webpack --mode production",
     "start": "npm run build:wasm && webpack serve --mode development",
+    "start:dev": "concurrently \"npm run start:mock-oauth\" \"npm run start\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean:wasm": "rm -rf dist/ src/wasm/pkg/ && cd src/wasm && cargo clean && cd ../..",
     "clean:all": "npm run clean:wasm && rm -rf node_modules",
     "test:e2e": "playwright test",
-    "test:e2e-ui": "playwright test --ui"
+    "test:e2e-ui": "playwright test --ui",
+    "start:mock-oauth": "node tests/e2e/mocks/start-mock-oauth.js"
   },
   "keywords": [
     "webassembly",
@@ -22,6 +24,7 @@
   "devDependencies": {
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.15.21",
+    "concurrently": "^9.1.2",
     "copy-webpack-plugin": "^11.0.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",

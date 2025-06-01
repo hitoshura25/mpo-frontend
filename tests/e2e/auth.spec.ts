@@ -8,7 +8,7 @@ test.describe('Authentication Flow', () => {
 
   test.beforeAll(async () => {
     mockOAuthServer = await setupMockOAuthServer({
-      clientId: 'test-client-id',
+      clientId: 'Media-Player-Omega',
       redirectUri: 'http://localhost:8080/login_callback.html'
     });
     mockOAuthServerPort = (mockOAuthServer.address() as AddressInfo).port;
@@ -23,7 +23,7 @@ test.describe('Authentication Flow', () => {
     await page.addInitScript((port) => {
       window._env_ = {
         OAUTH_AUTHORITY: `http://localhost:${port}`,
-        OAUTH_CLIENT_ID: 'test-client-id',
+        OAUTH_CLIENT_ID: 'Media-Player-Omega',
         OAUTH_REDIRECT_URI: 'http://localhost:8080/login_callback.html',
         OAUTH_POST_LOGOUT_REDIRECT_URI: 'http://localhost:8080/login.html',
       };

@@ -33,7 +33,24 @@ A web-based podcast player application that uses WebAssembly for audio processin
    ```
 3. Build the Web Assembly module and serve the app via Webpack
    ```
-   npm start
+   npm run start
+   ```
+
+4. Alternatively, to use the supplied mock oauth server locally, setup variables in .env like this:
+   ```
+   OAUTH_AUTHORITY=http://localhost:3306/
+   OAUTH_CLIENT_ID=Media-Player-Omega
+   OAUTH_REDIRECT_URI=http://localhost:8080/login_callback.html
+   OAUTH_POST_LOGOUT_REDIRECT_URI=http://localhost:8080/
+   ```
+
+   Then run this script:
+   ```
+   npm run start:dev
+   ```
+5. To run e2e tests
+   ```
+   npm run test:e2e
    ```
 
 ### Docker
