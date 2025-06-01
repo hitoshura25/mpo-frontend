@@ -6,24 +6,24 @@ import { Auth } from './auth';
 const podcastEpisodes = [
   {
     id: 1,
-    title: 'Introduction to WebAssembly',
-    description: 'Learn the basics of WebAssembly and how it can improve web performance',
-    audioUrl: 'https://example.com/podcast1.mp3',
-    duration: 1850 // in seconds
+    title: 'NES to Switch 2: 40 Years of Nintendo with IGN\'s Co-Founder - NVC Special',
+    description: 'As we approach the next generation of Nintendo, Brian Altano sits down with IGN co-founder Peer Schneider to look back at his decades-long journey covering Nintendo, from the early days to the dawn of the Switch 2.',
+    audioUrl: 'https://www.podtrac.com/pts/redirect.mp3/pdst.fm/e/chrt.fm/track/FGADCC/pscrb.fm/rss/p/tracking.swap.fm/track/bwUd3PHC9DH3VTlBXDTt/traffic.megaphone.fm/SBP3800309466.mp3?updated=1748630216',
+    duration: 6568 // in seconds
   },
   {
     id: 2,
-    title: 'Building Audio Applications with Rust',
-    description: 'Discover how to use Rust to build high-performance audio applications',
-    audioUrl: 'https://example.com/podcast2.mp3',
-    duration: 2340
+    title: 'Game Scoop! 813: The Witcher 3 & Cyberpunk Hit Important Milestones',
+    description: 'Welcome back to IGN Game Scoop!, the ONLY video game podcast! This week your Omega Cops -- Daemon Hatfield, Sam Claiborn, and Justin Davis -- are discussing The Witcher 3, Cyberpunk 2, Black Panther, The Last of Us, and more. And, of course, they play Video Game 20 Questions.',
+    audioUrl: 'https://www.podtrac.com/pts/redirect.mp3/pdst.fm/e/chrt.fm/track/FGADCC/pscrb.fm/rss/p/tracking.swap.fm/track/bwUd3PHC9DH3VTlBXDTt/traffic.megaphone.fm/SBP4198775748.mp3?updated=1748636657',
+    duration: 4336
   },
   {
     id: 3,
-    title: 'The Future of Web Development',
-    description: 'Exploring upcoming technologies that will shape the future of web development',
-    audioUrl: 'https://example.com/podcast3.mp3',
-    duration: 1620
+    title: 'Nintendo Refreshes Nintendo Switch Online App',
+    description: 'IGN Daily Update brings you the latest and most popular news stories to audio platforms. Be sure to check out IGN.com for more details on the news and our latest coverage on games, movies, tv, science, and tech throughout the day!',
+    audioUrl: 'https://chrt.fm/track/1EAADG/traffic.megaphone.fm/AIRWV8375753266.mp3?updated=1748576162',
+    duration: 374
   }
 ];
 
