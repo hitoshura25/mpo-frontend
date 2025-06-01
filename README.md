@@ -33,7 +33,16 @@ A web-based podcast player application that uses WebAssembly for audio processin
    ```
 3. Build the Web Assembly module and serve the app via Webpack
    ```
-   npm start
+   npm run start
+   ```
+
+4. Alternatively, to use the supplied mock oauth server locally run this script
+   ```
+   npm run start:dev
+   ```
+5. To run e2e tests
+   ```
+   npm run test:e2e
    ```
 
 ### Docker
