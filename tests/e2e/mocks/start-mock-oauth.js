@@ -2,8 +2,8 @@ import { setupMockOAuthServer } from './oauth-server.js';
 
 async function startServer() {
   const server = await setupMockOAuthServer({
-    clientId: 'Media-Player-Omega',
-    redirectUri: 'http://localhost:8080/frontend/login_callback.html',
+    clientId: process.env.OAUTH_CLIENT_ID,
+    redirectUri: process.env.OAUTH_REDIRECT_URI,
     port: 3306
   });
   

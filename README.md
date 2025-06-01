@@ -36,7 +36,15 @@ A web-based podcast player application that uses WebAssembly for audio processin
    npm run start
    ```
 
-4. Alternatively, to use the supplied mock oauth server locally run this script
+4. Alternatively, to use the supplied mock oauth server locally, setup variables in .env like this:
+   ```
+   OAUTH_AUTHORITY=http://localhost:3306/
+   OAUTH_CLIENT_ID=Media-Player-Omega
+   OAUTH_REDIRECT_URI=http://localhost:8080/login_callback.html
+   OAUTH_POST_LOGOUT_REDIRECT_URI=http://localhost:8080/
+   ```
+
+   Then run this script:
    ```
    npm run start:dev
    ```
