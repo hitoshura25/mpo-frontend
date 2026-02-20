@@ -1,0 +1,47 @@
+name: 'Run Playwright E2E Tests'
+description: 'Setup Node.js, install Playwright, run e2e tests, and upload the report'
+
+inputs:
+  artifact-name:
+    description: 'Name for the uploaded Playwright report artifact'
+    required: false
+    default: 'playwright-report'
+  use-existing-server:
+    description: 'Set to "true" to skip webServer startup and connect to a server already running on port 8080'
+    required: false
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      shell: bash
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+      shell: bash
+
+    - name: Run Playwright tests
+      run: npm run test:e2e
+      shell: bash
+      env:
+        PLAYWRIGHT_USE_EXISTING_SERVER: ${{ inputs.use-existing-server }}
+        OAUTH_AUTHORITY: "http://localhost:3000"
+        OAUTH_CLIENT_ID: "test-client-id"
+        OAUTH_REDIRECT_URI: "http://localhost:8080/login_callback.html"
+        OAUTH_POST_LOGOUT_REDIRECT_URI: "http://localhost:8080/login.html"
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: playwright-report/
+        retention-days: 30

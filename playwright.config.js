@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/e2e',
-  webServer: {
+  webServer: process.env.PLAYWRIGHT_USE_EXISTING_SERVER === 'true' ? undefined : {
     command: 'npm run start',
     port: 8080,
     reuseExistingServer: !process.env.CI
