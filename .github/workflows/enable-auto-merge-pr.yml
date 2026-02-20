@@ -16,7 +16,7 @@ jobs:
         id: generate-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ secrets.ENABLE_AUTO_MERGE_PR_BOT_BOT_APP_ID }}
+          app-id: ${{ secrets.ENABLE_AUTO_MERGE_PR_BOT_APP_ID }}
           private-key: ${{ secrets.ENABLE_AUTO_MERGE_PR_BOT_PRIVATE_KEY }}
 
       - name: Enable auto-merge for Snyk PR
