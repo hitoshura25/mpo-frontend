@@ -32,7 +32,7 @@ COPY --from=wasm-builder /app/src/wasm/pkg /app/src/wasm/pkg
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine
+FROM nginx:1.29.5-alpine3.23
 
 # Create a user with UID 1000
 RUN adduser -u 1000 -D myuser
