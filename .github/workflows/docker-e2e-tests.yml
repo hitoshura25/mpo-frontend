@@ -1,0 +1,67 @@
+name: Docker E2E Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build Docker image
+      run: docker build -t mpo-frontend:test .
+
+    - name: Start container
+      run: |
+        docker run -d \
+          -p 8080:80 \
+          -e OAUTH_AUTHORITY=http://localhost:3000 \
+          -e OAUTH_CLIENT_ID=test-client-id \
+          -e OAUTH_REDIRECT_URI=http://localhost:8080/login_callback.html \
+          -e OAUTH_POST_LOGOUT_REDIRECT_URI=http://localhost:8080/login.html \
+          --name mpo-test \
+          mpo-frontend:test
+
+    - name: Wait for nginx to be ready
+      run: |
+        echo "Waiting for nginx..."
+        for i in $(seq 1 15); do
+          if curl -sf http://localhost:8080 > /dev/null; then
+            echo "Server is ready"
+            exit 0
+          fi
+          echo "Attempt $i/15 failed, retrying in 2s..."
+          sleep 2
+        done
+        echo "Server did not become ready in time"
+        docker logs mpo-test
+        exit 1
+
+    - name: Run Playwright tests
+      uses: ./.github/actions/playwright-test
+      with:
+        use-existing-server: 'true'
+        artifact-name: 'playwright-report'
+
+  auto-merge:
+    if: startsWith(github.event.pull_request.title, '[Snyk]') && startsWith(github.head_ref, 'snyk-')
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate token from GitHub App
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.ENABLE_AUTO_MERGE_PR_BOT_BOT_APP_ID }}
+          private-key: ${{ secrets.ENABLE_AUTO_MERGE_PR_BOT_PRIVATE_KEY }}
+
+      - name: Enable auto-merge for Snyk PR
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.number }}"
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
