@@ -3,8 +3,6 @@ name: Docker E2E Tests
 on:
   pull_request:
     branches: [ main ]
-    paths:
-      - 'Dockerfile'
   workflow_dispatch:
 
 jobs:
@@ -44,8 +42,26 @@ jobs:
         docker logs mpo-test
         exit 1
 
-    - name: Run Playwright tests against Docker image
+    - name: Run Playwright tests
       uses: ./.github/actions/playwright-test
       with:
         use-existing-server: 'true'
-        artifact-name: 'playwright-report-docker'
+        artifact-name: 'playwright-report'
+
+  auto-merge:
+    if: startsWith(github.event.pull_request.title, '[Snyk]') && startsWith(github.head_ref, 'snyk-')
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate token from GitHub App
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.ENABLE_AUTO_MERGE_PR_BOT_BOT_APP_ID }}
+          private-key: ${{ secrets.ENABLE_AUTO_MERGE_PR_BOT_PRIVATE_KEY }}
+
+      - name: Enable auto-merge for Snyk PR
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.number }}"
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
