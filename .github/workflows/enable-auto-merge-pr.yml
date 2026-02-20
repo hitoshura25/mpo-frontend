@@ -6,6 +6,7 @@ on:
 
 jobs:
   auto-merge:
+    if: startsWith(github.event.pull_request.title, '[Snyk]') && startsWith(github.head_ref, 'snyk-')
     runs-on: ubuntu-latest
 
     steps:
